@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html>
+
+<!--  Para utilizar o AngularJS é necessário adicionar o atributo ng-app na área
+      que será controlada por ele. Isso é necessário, porque o AngularJS gerenciar
+      apenas o bloco com o atributo ng-app. Em nosso exemplo, estamos gerenciando o
+      HTML inteiro, mas poderiamos gerenciar uma área menor, deixando o restante params
+      outros frameworks que também gerenciam o HTML, como Emberjs, evitando conflito.
+      Um ponto curioso é que o atributo ng-app não existe no HTML, sendo uma diretiva do
+      AngularJS. Diretivas podem ser atributos, tags e até mesmo comentários especiais que
+      ampliam o vocabulário do navegador.
+  -->
+<html ng-app="contatooh">
   <head>
+    <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
     <title>Bem-vindo</title>
   </head>
-  <body>
+
+  <!-- Associamos um controller a um elemento de nossa página através da diretiva
+       ng-controller. Em nosso caso, ela será associada à tag <body>.-->
+  <body ng-controller="ContatosController">
     <h1>Bem-vindo ao Contatooh</h1>
+
+    <button type="button">Novo</button>
+    <p>
+      Contatos cadastrados: {{total}}
+    </p>
+
+    <script type="text/javascript" src="vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/controllers/ContatosController.js"></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 //Módulo de configuração do Express.
 var express = require('express');
 //Importa o módulo passando como parâmetro a instância configurada do Express.
-var home = require('../app/routes/home');
+//var home = require('../app/routes/home');
 //Importa o módulo do Express-load responsável por gerenciar o carregamento de módulos.
 var load = require('express-load');
 var bodyParser = require('body-parser');
