@@ -4,14 +4,30 @@
 
   O $scope é um Plain Old Javascript Object (POJO), logo, podemos adicionar propriedades dinamicamente
   e o mais fantástico é que elas serão acessíveis pela view através de AE.
+
+  O AngularJS possui o serviço $http responsável por requisições Ajax. Injetamos este serviço em nossos
+  controllers como qualquer outro artefado do framework.
+  O serviço $http recebe como parâmetro um objeto com as configurações da requisição.
+  {
+    method: //Método utilizado, pode ser GET, POST, PUT ou DELETE
+    url: //Endereço do recurso acessado.
+    data: //Objeto no qual cada propriedade será um parâmetro na requisição.
+  }
 */
-angular.module('contatooh').controller('ContatosController', function($scope) {
+angular.module('contatooh').controller('ContatosController', function($scope, $http) {
 
   $scope.total = 0;
 
   $scope.incrementa = function() {
     $scope.total++;
   };
+
+  /*
+    O $http não retorna a lista de contatos, mas uma promise (promessa) de que ele tentará
+    buscar esses dados.
+    Uma promise é um objeto que fornecerá o resultado futuro de uma ação.
+  */ 
+  var promise = $http({method: 'GET', url: '/contatos'});
 
   $scope.contatos = [
     {
