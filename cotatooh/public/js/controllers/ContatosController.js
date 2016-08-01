@@ -18,13 +18,7 @@ angular.module('contatooh').controller('ContatosController', function($scope, $h
 
   $scope.contatos = [];
 
-  $scope.total = 0;
-
   $scope.filtro = '';
-
-  $scope.incrementa = function() {
-    $scope.total++;
-  };
 
   /*
     O $http não retorna a lista de contatos, mas uma promise (promessa) de que ele tentará
