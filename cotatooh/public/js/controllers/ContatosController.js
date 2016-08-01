@@ -16,7 +16,11 @@
 */
 angular.module('contatooh').controller('ContatosController', function($scope, $http) {
 
+  $scope.contatos = [];
+
   $scope.total = 0;
+
+  $scope.filtro = '';
 
   $scope.incrementa = function() {
     $scope.total++;
@@ -25,27 +29,38 @@ angular.module('contatooh').controller('ContatosController', function($scope, $h
   /*
     O $http não retorna a lista de contatos, mas uma promise (promessa) de que ele tentará
     buscar esses dados.
-    Uma promise é um objeto que fornecerá o resultado futuro de uma ação.
-  */ 
-  var promise = $http({method: 'GET', url: '/contatos'});
+    Uma promise é um objeto que fornecerá o resultado futuro de uma ação. Ela possui três estados e,
+    dependendo desses estados, ações são executadas:
 
-  $scope.contatos = [
-    {
-      "_id": 1,
-      "nome": "Contato Angular 1",
-      "email": "cont1@empresa.com.br"
-    },
-    {
-      "_id": 2,
-      "nome": "Contato Angular 2",
-      "email": "cont2@empresa.com.br"
-    },
-    {
-      "_id": 3,
-      "nome": "Contato Angular 3",
-      "email": "cont3@empresa.com.br"
-    }
-  ];
+      fullfilled: quando a promise é bem-sucedida;
+      rejected: quando a promise é rejeitada;
+      failed: quando não é nem bem-sucedida nem rejeitada.
 
-  $scope.filtro = '';
+    * Uma promise que foi fulfilled ou rejected não pode ser fullfilled ou rejected novamente.
+
+    Uma promise possui o método then, que recebe como parâmetros callbacks. O primeiro é
+    executado quando o status da promise for fullfilled; o segundo, para os estados rejected
+    e failed.
+    O AngularJS introduz a função catch, que permite isolar o callback dos estados rejected e failed.
+    No retono temos acesso a propriedades especiais que nos permitem acessar os dados retornados, inclusive
+    obter mensagens de erro enviadas pelo servidor:
+
+      data: o body da resposta transformado e pronto para usar;
+      status: número que indica o status HTTP da resposta;
+      statusText: texto HTTP da resposta.
+
+    Ainda é possível ter acesso ao objeto header e config, este último com as configurações utilizadas na
+    requisição.
+  */
+  //Faz a requisição aos dados no servidor.
+  $http.get('/contatos')
+    //Caso os requisição seja concluída com sucesso.
+    .success(function(data) {
+        $scope.contatos = data;
+    })
+    //Caso ocorra algum erro...
+    .error(function(statusText) {
+      console.log("Não foi possível obter a lista de contatos.");
+      console.log(statusText);
+    });
 });
