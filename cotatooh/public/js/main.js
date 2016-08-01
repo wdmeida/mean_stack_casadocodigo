@@ -7,7 +7,7 @@
   é o nome do módulo; o segundo, um array com todas as suas dependências. Não temos nenhuma
   dependência por enquanto, ainda assim, precisamos passar o array vazio como parâmetro.
 */
-angular.module('contatooh', ['ngRoute'])
+angular.module('contatooh', ['ngRoute', 'ngResource'])
   /*
     A configuração das rotas da aplicação costuma ser feita no módulo principal da aplicação, ou seja,
     no arquivo main.js. Utilizamos a função config, que recebe uma função que tem como parâmetro um

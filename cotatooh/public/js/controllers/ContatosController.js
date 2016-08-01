@@ -14,7 +14,7 @@
     data: //Objeto no qual cada propriedade será um parâmetro na requisição.
   }
 */
-angular.module('contatooh').controller('ContatosController', function($scope, $http) {
+angular.module('contatooh').controller('ContatosController', function($scope, $resource) {
 
   $scope.contatos = [];
 
@@ -45,7 +45,7 @@ angular.module('contatooh').controller('ContatosController', function($scope, $h
 
     Ainda é possível ter acesso ao objeto header e config, este último com as configurações utilizadas na
     requisição.
-  */
+
   //Faz a requisição aos dados no servidor.
   $http.get('/contatos')
     //Caso os requisição seja concluída com sucesso.
@@ -57,4 +57,66 @@ angular.module('contatooh').controller('ContatosController', function($scope, $h
       console.log("Não foi possível obter a lista de contatos.");
       console.log(statusText);
     });
+    */
+
+    /*
+      AngularJS possui um serviço de mais alto nível chamado $resource, específico para consumir
+      REST Endpoints.
+      O serviço $resource nos devolve um objeto que permite realizar uma série de operações seguindo
+      o padrão REST para o recurso /contatos. O nome da variável está em maiúscula, algo intencional
+      para diferenciá-lo de uma possível variável que represente o model para contato.
+      Nosso objetivo é realizar uma consulta ao nosso serviço e obter a lista de contatos. Para esta
+      finalidade, existe a função query. A função, por debaixo dos panos, monta uma requisição do tipo
+      GET para o recurso /contatos em nosso servidor. E como estamos trabalhando com uma requisição
+      assíncrona, podemos pedir que ela nos devolva uma promise.
+
+            var Contato = $resource('/contatos').$promise;
+
+      No lugar de recebermos uma promise, podemos passar para a função query duas funções: a primeira, um
+      callback de sucesso; e a segunda, um callback de erro.
+    */
+
+    var Contato = $resource('/contatos/:id');
+
+    function buscaContatos() {
+      Contato.query(
+        //Callback executado caso a requisição sejá executada com sucesso.
+        function(contatos) {
+          $scope.contatos = contatos;
+        },
+        //Callback executado caso haja erro na requisição.
+        function(erro) {
+          console.log("Não foi possível obter a lista de contatos");
+          console.log(erro);
+        }
+      );
+    }
+
+    buscaContatos();
+
+
+      /*
+        Além do primeiro parâmetro na função delete, que indica os parâmetros da requisição, podemos
+        passar mais dois: o primeiro, um callback de sucesso; o segundo um callback de falhar, deixando
+        a nossa função menos verbosa. Abaixo comentada esta a versão original.
+
+      1ª versão.
+
+      var promise = Contato.delete({id: contato._id}).$promise;
+      promise
+        .then(buscaContato)
+        .catch(function(erro) {
+          console.log("Não foi possível remover o contato");
+          console.log(erro);
+        });
+        */
+    $scope.remove = function(contato) {
+      Contato.delete({id: contato._id},
+                      buscaContatos,
+                      function(erro) {
+                        console.log("Não foi possível remover o contato.");
+                        console.log(erro);
+                      }
+                    );
+    };
 });
