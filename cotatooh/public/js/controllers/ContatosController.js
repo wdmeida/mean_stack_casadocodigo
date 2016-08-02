@@ -14,7 +14,7 @@
     data: //Objeto no qual cada propriedade será um parâmetro na requisição.
   }
 */
-angular.module('contatooh').controller('ContatosController', function($scope, $resource) {
+angular.module('contatooh').controller('ContatosController', function($scope, Contato) {
 
   $scope.contatos = [];
 
@@ -75,10 +75,10 @@ angular.module('contatooh').controller('ContatosController', function($scope, $r
 
       No lugar de recebermos uma promise, podemos passar para a função query duas funções: a primeira, um
       callback de sucesso; e a segunda, um callback de erro.
-    */
+
 
     var Contato = $resource('/contatos/:id');
-
+*/
     function buscaContatos() {
       Contato.query(
         //Callback executado caso a requisição sejá executada com sucesso.

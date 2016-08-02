@@ -14,8 +14,8 @@ module.exports = function (app) {
     rotas mais enxutas e mais fácil de manter.
   */
   app.route('/contatos')
-    .get(controller.listaTodos);
-    //.post(controller.salvaContato);
+    .get(controller.listaTodos)
+    .post(controller.salvaContato);
 
   app.route('/contatos/:id')
     .get(controller.obtemContato)

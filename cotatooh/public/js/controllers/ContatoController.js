@@ -1,8 +1,10 @@
 angular.module('contatooh').controller('ContatoController',
-  function($scope, $routeParams, $resource) {
+  //Repare na troca da injeção $resource pelo nome de nosso serviço, Contato.
+  function($scope, $routeParams, Contato) {
 
-    //A rota continua no plural, pois é a rota no lado do servidor.
+    /*A rota continua no plural, pois é a rota no lado do servidor.
     var Contato = $resource('/contatos/:id');
+    */
 
     /*
       Realiza a busca apenas se o ID do contato for passado para o sistema de rotas do AngularJS
@@ -17,9 +19,8 @@ angular.module('contatooh').controller('ContatoController',
                 },
                 function(erro) {
                   $scope.mensagem = {
-                    texto: 'Não foi possível obter o contato.'
+                    texto: 'Contato não existe. Novo contato.'
                   };
-                  console.log(erro);
                 }
               );
     } else {
