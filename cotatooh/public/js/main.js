@@ -31,6 +31,11 @@ angular.module('contatooh', ['ngRoute', 'ngResource'])
         controller: 'ContatoController'
       });
 
+      $routeProvider.when('/contato', {
+        templateUrl: 'partial/contato.html',
+        controller: 'ContatoController'
+      });
+
       /*
         Podemos adicionar uma rota padrão caso o endereço da rota não exista. Fazemos isso através da função
         $routeProvider.otherwise. Nela passamos um objeto com a propriedade redirectTo, que aponta para uma

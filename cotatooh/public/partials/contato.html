@@ -2,7 +2,12 @@
 <p ng-show="mensagem.texto">
   {{mensagem.texto}}
 </p>
-<form>
+
+<!-- No lugar de usar a diretiva ng-click no botão Salva, utilizaremos a diretiva ng-submit no
+     formulário da página, permitindo que o browser processe seus componetes, logo, realizando
+     a validação do formulário.
+  -->
+<form ng-submit="salva()">
   <div class="form-group">
     <label for="nome">Nome completo</label>
     <input type="text" class="form-control" id="nome" name="nome" required ng-model="contato.nome">
