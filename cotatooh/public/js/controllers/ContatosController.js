@@ -20,6 +20,7 @@ angular.module('contatooh').controller('ContatosController', function($scope, $r
 
   $scope.filtro = '';
 
+  $scope.mensagem = {texto: ''};
   /*
     O $http não retorna a lista de contatos, mas uma promise (promessa) de que ele tentará
     buscar esses dados.
@@ -86,8 +87,10 @@ angular.module('contatooh').controller('ContatosController', function($scope, $r
         },
         //Callback executado caso haja erro na requisição.
         function(erro) {
-          console.log("Não foi possível obter a lista de contatos");
           console.log(erro);
+          $scope.mensagem = {
+            texto: 'Não foi possível obter a lista'
+          };
         }
       );
     }
@@ -112,11 +115,17 @@ angular.module('contatooh').controller('ContatosController', function($scope, $r
         */
     $scope.remove = function(contato) {
       Contato.delete({id: contato._id},
+                      //Callback executado em caso de sucesso.
                       buscaContatos,
+                      //Callback executado em caso de erro.
                       function(erro) {
-                        console.log("Não foi possível remover o contato.");
+                        $scope.mensagem = {
+                          texto: 'Não foi possível remover o contato.'
+                        };
                         console.log(erro);
                       }
                     );
     };
+
+
 });
