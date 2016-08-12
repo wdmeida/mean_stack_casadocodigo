@@ -33,6 +33,9 @@ module.exports = function(uri) {
   */
   mongoose.connect(uri);
 
+  //Habilita o debbuger do mongo.
+  mongoose.set('debug', true);
+
   /*
     Poderíamos até subir nossa aplicação, porém não teríamos nenhuma informação sobre o estado da
     conexão. Podemos resolver este problema através dos eventos connected, disconnected e error
