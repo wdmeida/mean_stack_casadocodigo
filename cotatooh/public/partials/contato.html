@@ -24,8 +24,16 @@
 
   <div class="form-group">
       <label for="emergencia">Emergência</label>
-      <select class="form-control" id="emergencia">
-        ng-model="contato.emergencia"
+      <!--
+          Além da diretiva ng-model, adicionamos a diretiva ng-options, que possui comportamente parecido
+          com ng-repeat, porém a sintaxe "contato._id as contato.nome" indica que o valor do elemento será
+          o ObjectId do contato e o que será exibido para seleção será seu nome. O restante "for contato in
+          contatos" percorrerá a lista de contatos disponibilizada no escopo do controller, construindo cada
+          item de nossa lista.
+      -->
+      <select class="form-control" id="emergencia"
+            ng-model="contato.emergencia"
+            ng-options = "contato._id as contato.nome for contato in contatos">
       </select>
   </div>
 

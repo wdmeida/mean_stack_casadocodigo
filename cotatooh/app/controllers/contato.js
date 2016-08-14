@@ -10,8 +10,19 @@ module.exports = function(app) {
       promise através da chamada encadeada à função exec. Toda promisse em AngularJS possui a função then.
       Isso não é diferente com a promise do Mongoose, mas ela não possui a função catch. Vamos passar os
       callbacks de sucesso e de falha para a função then e omitiremos a declaração da variável promise.
+
+      Quando definimos uma referência em nosso esquema, apenas damos uma pista para o Mongoose de como ele
+      deve buscá-la, porém temos que explicitar isso em nosso código através da função populate.
+
+      Em nosso controller, temos a função listaTodos. Nela, utilizados a função Contato.find para listar todos
+      os contatos cadastrados e que, no final, retorna uma promise através da chamada à função exec. Precisamos
+      chamar populate antes de retornarmos a promise, isto é, antes da chamada à exec.
+
+      Repare que passamos para a função populate a referência que o Mongoose deverá resolver. No final, cada
+      contato de nossas lista, no lugar do ObjectId da sua emergência, conterá a emergência inteira como um
+      embedded document.
     */
-    Contato.find().exec()
+    Contato.find().populate('emergencia').exec()
       .then(
         //Callback de sucesso.
         function(contatos){
