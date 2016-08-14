@@ -22,6 +22,16 @@ module.exports = function () {
       index: {
         unique: true
       }
+    },
+    /*
+      Repare que além do type adicionamos também a chave ref, que possui como valor um Model,
+      em nosso caso, o Model Contato. Isso faz todo o sentido, já que temos um autorelacionamento.
+      Esse exemplo demonstra que podemos adotar como type qualquer Model criado por nós através do
+      Mongoose.
+    */
+    emergencia: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Contato'
     }
   });
 
