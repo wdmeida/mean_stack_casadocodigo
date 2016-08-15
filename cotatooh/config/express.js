@@ -5,6 +5,10 @@ var express = require('express');
 //Importa o módulo do Express-load responsável por gerenciar o carregamento de módulos.
 var load = require('express-load');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var passport = require('passport');
+
 
 module.exports = function() {
   var app = express();
@@ -21,6 +25,31 @@ module.exports = function() {
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(require('method-override')());
+
+  /*
+    O middleware cookieParser realiza o parser do header de cookies da requisição populando req.cookies e
+    armazena o ID da sessão. O segundo middleware session cria por padrão a sessão do usuário em memória.
+    Ele recebe três parâmetros:
+
+      secret: o cookie de sessão é assinado com este segredo para evitar adulteração.
+      resave: garante que as informações da sessão serão acessíveis através de cookies a cada requisição.
+      saveUnitialized: essa opção soluciona problemas que envolvem a requisição de uma permissão antes de
+                       atribuir um cookie.
+
+    Quando usamos Express, precisamos chamar a função passport.initialize para inicializar o Passport. Como
+    nossa aplicação usa sessões de login persistentes, também precisamos utilizar o middleware passport.session.
+    Um ponto a destacar é que a inicialização da sessão do Express deve vir sempre antes de passport.session para
+    garantirmos que a sessão de login seja restaurada na ordem correta.
+  */
+  app.use(cookieParser());
+  app.use(session(
+    { secret: 'homem avestruz',
+      resave: true,
+      saveUnitialized: true
+    }
+  ));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   // Define o template engine que sera usado para gerar as views e onde ficarão armazenadas.
   app.set('view engine', 'ejs');
