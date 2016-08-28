@@ -17,8 +17,8 @@ module.exports = function() {
     deve receber como parâmetro os dados que queremos mais tarde armazenar na sessão.
   */
   passport.use(new GitHubStrategy({
-    clientID: '',//'SEU CLIENT ID'
-    clientSecret: '',//'SEU CLIENT PASSWORD'
+    clientID: 'b9a2cee5648a734a8fd5',//'SEU CLIENT ID'
+    clientSecret: 'cc104b6e6522fcfca4740cc64cf7cc0bdf1d9403',//'SEU CLIENT PASSWORD'
     callbackURL: 'http://localhost:3000/auth/github/callback' //'SUA REDIRECT_URI'
   }, function(accessToken, refreshToken, profile, done) {
 
@@ -45,13 +45,26 @@ module.exports = function() {
   }));
 
   /*
-    Chamado apenas UMA vez e recebe o usuário do nosso banco, disponibilizado pelo callback da estratéGitHubStrategy
+    Chamado apenas UMA vez e recebe o usuário do nosso banco, disponibilizado pelo callback da estratégia
     de autenticação. Realizará a serialização apenas do ObjectId do usuário na sessão.
+    Não queremos correr o risco de onerar a memória do servidor guardando informações desnecessárias, motivo
+    pelo  qual serializaremos apenas o ObjectId do usuário na sessão. Esse processo é realizado através da
+    função passport.serializeUser, que recebe dois parâmetros. O primeiro é o usuário que foi passado pela
+    estratégia de autenticação. O segundo, uma função que receba a informação do usuário que desejamos
+    serializar na sessão.
   */
   passport.serializeUser(function(usuario, done) {
     done(null, usuario._id);
   });
 
+  /*
+    Toda vez que precisarmos acessar outras informações do usuário em nossos controllers, será necessário
+    buscá-lo no banco através de seu ObjectId. A boa notícia é que podemos delegar esse processo de desserialização
+    ao Passport.
+    Em cada requisição, o Passport chamará sua função de desserialização passando como parâmetro o ObjectId do usuário
+    armazenado na sessão. Usaremos essa informação para buscar o usuário no banco, inclusive o Passport disponibilizará
+    o usuário encontrado em cada request através da chave req.user, rornando-o facilmente acessível em nossos controllers.
+  */
   passport.deserializeUser(function(id, done) {
     Usuario.findById(id).exec()
       .then(function(usuario) {

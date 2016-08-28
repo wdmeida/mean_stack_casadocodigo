@@ -5,6 +5,7 @@ var express = require('express');
 //Importa o módulo do Express-load responsável por gerenciar o carregamento de módulos.
 var load = require('express-load');
 var bodyParser = require('body-parser');
+//Importa os módulos para trabalhar com sessões (respectivamente cookie-parser e express-session).
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
@@ -69,6 +70,8 @@ module.exports = function() {
   */
   load('models', {cwd: 'app'})
       .then('controllers')
+      //Garante que a verificação da autenticação do usuário seja a primeira a ser executada.
+      .then('routes/auth.js')
       .then('routes')
       .into(app);
 
