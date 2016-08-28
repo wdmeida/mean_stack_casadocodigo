@@ -34,7 +34,7 @@ module.exports = function() {
 
       secret: o cookie de sessão é assinado com este segredo para evitar adulteração.
       resave: garante que as informações da sessão serão acessíveis através de cookies a cada requisição.
-      saveUnitialized: essa opção soluciona problemas que envolvem a requisição de uma permissão antes de
+      saveUninitialized: essa opção soluciona problemas que envolvem a requisição de uma permissão antes de
                        atribuir um cookie.
 
     Quando usamos Express, precisamos chamar a função passport.initialize para inicializar o Passport. Como
@@ -46,7 +46,7 @@ module.exports = function() {
   app.use(session(
     { secret: 'homem avestruz',
       resave: true,
-      saveUnitialized: true
+      saveUninitialized: true
     }
   ));
   app.use(passport.initialize());
@@ -70,7 +70,6 @@ module.exports = function() {
   */
   load('models', {cwd: 'app'})
       .then('controllers')
-      //Garante que a verificação da autenticação do usuário seja a primeira a ser executada.
       .then('routes/auth.js')
       .then('routes')
       .into(app);

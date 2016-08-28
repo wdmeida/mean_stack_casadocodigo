@@ -1,5 +1,4 @@
 var http = require('http');
-var express = require('express');
 var app = require('./config/express')();
 //Carrega o módulo de configuração do Passport imediatamente após a configuração do Express.
 require('./config/passport')();
