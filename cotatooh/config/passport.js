@@ -6,6 +6,7 @@
 */
 var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
+var findOrCreate = require('mongoose-findorcreate');
 var mongoose = require('mongoose');
 
 module.exports = function() {
@@ -36,7 +37,6 @@ module.exports = function() {
         { "nome" : profile.username },
         function(erro, usuario) {
           if(erro){
-            console.log(erro);
             return done(erro);
           }
           return done(null, usuario);

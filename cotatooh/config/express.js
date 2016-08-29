@@ -15,7 +15,11 @@ module.exports = function() {
   var app = express();
   // variável de ambiente
   app.set('port', 3000);
-  //  middleware
+
+  //  middlewares
+  // Define o template engine que sera usado para gerar as views e onde ficarão armazenadas.
+  app.set('view engine', 'ejs');
+  app.set('views', './app/views');
   app.use(express.static('./public'));
 
   /*
@@ -51,10 +55,6 @@ module.exports = function() {
   ));
   app.use(passport.initialize());
   app.use(passport.session());
-
-  // Define o template engine que sera usado para gerar as views e onde ficarão armazenadas.
-  app.set('view engine', 'ejs');
-  app.set('views', './app/views');
 
   /*
     A função load carregará todos os scripts dentro das pastas app/models, app/controllers

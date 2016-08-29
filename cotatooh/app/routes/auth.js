@@ -17,11 +17,9 @@ module.exports = function(app) {
   */
   app.get('/auth/github', passport.authenticate('github'));
   app.get('/auth/github/callback',
-            passport.authenticate('github',{
+            passport.authenticate('github', {
               successRedirect: '/'
-              }
-            )
-          );
+              }));
 
   /*
     Precisamos redirecionar para página de login qualquer usuário não autenticado.
@@ -30,7 +28,7 @@ module.exports = function(app) {
     as próximas rotas definidas sejam processadas, caso contrário, ele será redirecionado para uma página
     com apenas o link "Entre no GitHub". Essa página será uma view ejs, logo, só poderá ser acessada através
     de uma rota específica.
-  */
+*/
   app.get('/', function(req, res, next) {
     if (req.isAuthenticated()) {
       //Permite que outras rotas sejam processadas.
@@ -39,5 +37,10 @@ module.exports = function(app) {
       //renderiza auth.ejs
       res.render("auth");
     }
+  });
+
+  app.get('/logout', function(req, res) {
+    req.logOut(); //Exposto pelo passport.
+    res.redirect('/');
   });
 };

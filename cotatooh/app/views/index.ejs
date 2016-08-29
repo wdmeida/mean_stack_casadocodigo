@@ -19,12 +19,18 @@
     <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.css">
   </head>
 
-  <body class="container">
-    <div class="text-right">
-      <p>
-        Logado como: <span id="usuario-logado"><%=usuarioLogado %></span>
-      </p>
-    </div>
+  <body class="container" ng-controller="ContatosController">
+    <%if (usuarioLogado.length > 0) { %>
+      <div class="text-right">
+        <p>
+          Logado como:
+            <span id="usuario-logado">
+              <%=usuarioLogado %>
+            </span>
+            <a href="/logout">Logout</a>
+        </p>
+      </div>
+    <% } %>
     <div ng-view></div>
 
     <script type="text/javascript" src="vendor/angular/angular.js"></script>
