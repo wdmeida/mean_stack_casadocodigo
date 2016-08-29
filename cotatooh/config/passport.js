@@ -18,8 +18,8 @@ module.exports = function() {
     deve receber como parâmetro os dados que queremos mais tarde armazenar na sessão.
   */
   passport.use(new GitHubStrategy({
-    clientID: 'b9a2cee5648a734a8fd5',//'SEU CLIENT ID'
-    clientSecret: 'cc104b6e6522fcfca4740cc64cf7cc0bdf1d9403',//'SEU CLIENT PASSWORD'
+    clientID: '',//'SEU CLIENT ID'
+    clientSecret: '',//'SEU CLIENT PASSWORD'
     callbackURL: 'http://localhost:3000/auth/github/callback' //'SUA REDIRECT_URI'
   }, function(accessToken, refreshToken, profile, done) {
 
