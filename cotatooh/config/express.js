@@ -9,6 +9,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
+//Importa o Helmet que possui middlewares de tratamento de header já prontos, tornando a aplicação mais segura.
+var helmet = require('helmet');
 
 
 module.exports = function() {
@@ -55,6 +57,41 @@ module.exports = function() {
   ));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.use(helmet());
+
+  //Para desabilitar a informação sobre a tecnologia utilizada no cabeçalho basta desabitar o serviço:
+  //app.disable('x-powered-by');
+  //Ao invés de desabilitar, você pode mascarar a informação dificultando a vida do potencial invasor.
+  //Forneceremos uma informação falsa através do middleware helmet.hidePoweredBy.
+  app.use(helmet.hidePoweredBy({setTo: 'PHP 5.5.14'}));
+  /*
+    Nem sempre você quer que sua aplicação seja colocada dentro de um <frame> ou <iframe>, evitando possíveis
+    ataques do tipo clickjacking. Esse ataque disponibiliza um <iframe> invisível ou redimensionado contendo a
+    página que o atacante quer que visitemos sem saber, porém ele é colocado sobre algum elemento da página como
+    links e botões aparentemente inofensivos. Quando clicarmos sobre o link ou botão, estaremos executando um
+    código da página do <iframe> e não da página no qual nos encontramos.
+    Através do middleware helmet.xframe que evitamos que nossas páginas sejam referenciadas por <frame> ou <iframe>.
+  */
+  app.use(helmet.xframe());
+  /*
+    Um exemplo clássico de XSS (cross-site-scripting) envolve o post de um blog. Alguém, com a intenção velada de
+    prejudicar outra pessoa, adiciona em seu post a tag <script> que aponta para um script malicioso. Quando o post
+    for visualizado (um que não foi sanitizado previamente) no navegador, a tag indevidamente será processada. Uma
+    solução parcial para o problema é utilizar o middleware helmet.xssFilter.
+
+    Esse código adiciona o header http X-XSS-Protection originalmente criado pela Microsoft. A Google gostou tanto da
+    ideia que mais tarde adicionou o suporte deste header ao Chrome. O header solicita ao navegador a ativação de uma
+    proteção especial contra XSS. Há suporte apenas ao IE9+ e Chrome, sendo desabilitado para outros navegadores,
+    principalmente os mais antigos.
+  */
+  app.use(helmet.xssFilter());
+  /*
+    Alguns navegadores permitem carregar através das tags link e script arquivos que não sejam dos MIME types
+    text/css e text/javascript, respectivamente.
+    Porém, se no header de resposta houver o X-Content-Type-Options: nosniff o navegador não permitirá esse abuso.
+  */
+  app.use(helmet.nosniff());
 
   /*
     A função load carregará todos os scripts dentro das pastas app/models, app/controllers
