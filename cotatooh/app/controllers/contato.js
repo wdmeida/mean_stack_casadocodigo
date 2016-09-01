@@ -1,3 +1,5 @@
+var sanitize = require('mongo-sanitize');
+
 module.exports = function(app) {
   //Obtêm uma referência ao Model disponível na instância do Express passada como parâmetro para o módulo.
   var Contato = app.models.contato;
@@ -60,7 +62,17 @@ module.exports = function(app) {
   };
 
   controller.removeContato = function(req, res) {
-    var _id = req.params.id;
+    /*
+      Nossa API espera receber como parâmetro uma string contendo o ObjectId do contato. Caso seja passado
+      como parâmetro um objeto com o query selector $ne (por exemplo, { "$ne" : null }), poderia ser resultado
+      na remoção de todos os contatos de nosso banco. Essa estratégia pode ser utilizada em outros lugares que
+      esperam um critério de consulta.
+      Para solucionarmos o problema de injeção através de query selectors, devemos aceitar apenas strings como
+      critério. Porém, se recebermos um objeto, basta remover qualquer chave que contenha $ como valor. Há um
+      projeto que realiza essa verificação pra nós, o mongo-sanitize.
+    */
+    //Sanitiza o id para que sejam removidas chaves que contenham query selector.
+    var _id = sanitize(req.params.id);
 
     /*
       Utilizaremos a função Contato.remove que recebe como critério o ObjectId procurado. Se a operação for
