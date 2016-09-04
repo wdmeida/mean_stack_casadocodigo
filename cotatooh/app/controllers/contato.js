@@ -105,8 +105,16 @@ module.exports = function(app) {
       de pesquisa, não precisamos chamar a função exec, pois a própria create já retorna uma promise por padrão.
     */
     var _id = req.body._id;
+    /*
+      Independente da quantidade de parâmetros, apenas selecionamos o nome, email e emergência.
+    */
+    var dados = {
+      "nome" : req.body.nome,
+      "email" : req.body.email,
+      "emergencia" : req.body.emergencia || null
+    };
     if (_id) {
-    Contato.findByIdAndUpdate(_id, req.body).exec()
+    Contato.findByIdAndUpdate(_id, dados).exec()
         .then(
           function(contato){
             res.json(contato);
@@ -117,7 +125,7 @@ module.exports = function(app) {
           }
         );
     } else {
-      Contato.create(req.body)
+      Contato.create(dados)
         .then(
           function(contato){
             res.status(201).json(contato);
