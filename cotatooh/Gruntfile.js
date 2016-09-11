@@ -37,6 +37,15 @@ module.exports = function(grunt) {
     }
   });
 
+  //Será executada quando executarmos o comando grunt sem parâmetros.
+  grunt.registerTask('default', ['dist']);
+  /*
+    Registra novas tasks que funcionam como uma espécie de atalho. Quando chamada, as demais tasks são chamadas em sequência.
+    A função recebe primeiro o nome da nossa task. O segundo é um array com o nome das tasks já configuradas pelo Grunt. A ordem
+    é importante, pois a primeria será executada antes da segunda e por aí vai.
+  */
+  grunt.registerTask('dist', ['clean', 'copy']);
+
   //Carrega o plugin responsável por realizar cópia dos arquivos do projeto.
   //Repare que o carregamento de plugins do Grunt é feito no gruntfile.js através da função grunt.loadNpmTasks.
   grunt.loadNpmTasks('grunt-contrib-copy');
