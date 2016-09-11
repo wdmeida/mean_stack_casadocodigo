@@ -1,0 +1,64 @@
+<!-- public/partials/contatos.html -->
+
+<div class="jumbotron">
+  <p ng-show="mensagem.texto">
+    {{mensagem.texto}}
+  </p>
+  <h1 class="text-center">
+    Bem-vindo ao Contatooh
+  </h1>
+</div>
+
+<a ng-href="#/contato" class="btn btn-primary">
+  Novo Contato
+</a>
+<!-- Não podemos simplesmente utilizar uma Angular Expression {{}} em nosso input, porque
+     toda AE é somente leitura. Em nosso caso, queremos ler e gravar em uma propriedade no
+     escopo do controller, isto é, queremos fazer two-way data binding. Para isso, usamos a
+     diretiva ng-model.
+  -->
+<input ng-model="filtro" type="search" placeholder="parte do nome">
+
+<!-- Para que o parágrafo seja exibido apenas se houver elementos na lista, é utilizada a diretiva
+     ng-show que possui os mesmos valores de ng-hide ('true' ou 'false').
+   -->
+<p ng-show="contatos.length">Contatos cadastrados: {{contatos.length}}</p>
+
+<!-- Podemos exibir para o usuário uma mensagem quando a lista estiver vazia. Não podemos simplesmente
+     adicionar este texto em nossa página, pois ele seria sempre exibido. É ai que entra a diretiva ng-hide.
+     Elementos com esta diretiva ficam invisíveis quando o valor de ng-hide for true.
+     Em JavaScript, qualquer número diferente de zero é considerado true, por isso o valor da diretiva
+     foi preenchido com o valor da quantidade de contatos.
+   -->
+<p class="text-info" ng-hide="contatos.length">
+  Não há contatos cadastrados
+</p>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tr>
+      <th>NOME</th>
+      <th>E-MAIL</th>
+      <th>EMERGÊNCIA</th>
+      <th class="text-center">Ação</th>
+    </tr>
+
+    <!-- Além de listar todos os dados pela diretiva ng-repeat, estamos filtrando a lista utilizando
+         como critério a propriedade filtro presente no escopo do controlador e alimentada com tudo
+         aquilo que o usuário digitar.
+    -->
+    <tr ng-repeat="contato in contatos | filter: filtro">
+      <td>
+        <a ng-href="#/contato/{{contato._id}}">{{contato.nome}}</a>
+      </td>
+      <td>{{contato.email}}</td>
+
+      <td>{{contato.emergencia.nome}}</td>
+
+      <td class="text-center">
+        <button ng-click="remove(contato)" class="btn btn-warning">
+          Remover
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>

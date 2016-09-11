@@ -1,0 +1,46 @@
+<h1 class="text-center">Contato</h1>
+<p ng-show="mensagem.texto">
+  {{mensagem.texto}}
+</p>
+
+<!-- No lugar de usar a diretiva ng-click no botão Salva, utilizaremos a diretiva ng-submit no
+     formulário da página, permitindo que o browser processe seus componetes, logo, realizando
+     a validação do formulário.
+  -->
+<form ng-submit="salva()">
+  <div class="form-group">
+    <label for="nome">Nome completo</label>
+    <input type="text" class="form-control" id="nome" name="nome" required ng-model="contato.nome">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <div class="input-group">
+      <span class="input-group-addon">@</span>
+      <input type="email" class="form-control" id="email" placeholder="email@exemplo.com"
+      name="name" ng-model="contato.email" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <label for="emergencia">Emergência</label>
+      <!--
+          Além da diretiva ng-model, adicionamos a diretiva ng-options, que possui comportamente parecido
+          com ng-repeat, porém a sintaxe "contato._id as contato.nome" indica que o valor do elemento será
+          o ObjectId do contato e o que será exibido para seleção será seu nome. O restante "for contato in
+          contatos" percorrerá a lista de contatos disponibilizada no escopo do controller, construindo cada
+          item de nossa lista.
+      -->
+      <select class="form-control" id="emergencia"
+            ng-model="contato.emergencia"
+            ng-options = "contato._id as contato.nome for contato in contatos">
+      </select>
+  </div>
+
+  <div>
+    <button type="submit" class="btn btn-primary">
+      Salvar
+    </button>
+    <a href="#/" class="btn btn-default">Voltar</a>
+  </div>
+</form>
