@@ -14,7 +14,7 @@
     data: //Objeto no qual cada propriedade será um parâmetro na requisição.
   }
 */
-angular.module('contatooh').controller('ContatosController', function($scope, Contato) {
+angular.module('contatooh').controller('ContatosController', ["$scope", "Contato", function($scope, Contato) {
 
   $scope.contatos = [];
 
@@ -128,4 +128,4 @@ angular.module('contatooh').controller('ContatosController', function($scope, Co
     };
 
 
-});
+}]);

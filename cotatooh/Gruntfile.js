@@ -34,20 +34,44 @@ module.exports = function(grunt) {
       dist: {
         src: 'dist'
       }
+    },
+    //Altera os arquivos html fazendo com que eles apontem para os arquivos concatenados e minificados.
+    usemin: {
+      html: 'dist/app/views/**/*.ejs'
+    },
+    //Gera configurações dinâmicas para grunt-contrib-concat, grunt-contrib-uglify e grunt-contrib-cssmin.
+    useminPrepare: {
+      options: {
+        root: 'dist/public',
+        dest: 'dist/public'
+      },
+      html: 'dist/app/views/**/*.ejs'
+    },
+    ngAnnotate: {
+      scripts: {
+        expand: true,
+        src: ['dist/public/js/**/*.js']
+      }
     }
   });
 
   //Será executada quando executarmos o comando grunt sem parâmetros.
-  grunt.registerTask('default', ['dist']);
+  grunt.registerTask('default', ['dist','minifica']);
   /*
     Registra novas tasks que funcionam como uma espécie de atalho. Quando chamada, as demais tasks são chamadas em sequência.
     A função recebe primeiro o nome da nossa task. O segundo é um array com o nome das tasks já configuradas pelo Grunt. A ordem
     é importante, pois a primeria será executada antes da segunda e por aí vai.
   */
   grunt.registerTask('dist', ['clean', 'copy']);
+  grunt.registerTask('minifica', ['useminPrepare', 'ngAnnotate','concat', 'uglify', 'cssmin', 'usemin']);
 
   //Carrega o plugin responsável por realizar cópia dos arquivos do projeto.
   //Repare que o carregamento de plugins do Grunt é feito no gruntfile.js através da função grunt.loadNpmTasks.
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-usemin');
+  grunt.loadNpmTasks('grunt-ng-annotate');
 };

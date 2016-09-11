@@ -14,7 +14,7 @@ angular.module('contatooh', ['ngRoute', 'ngResource'])
     artefato injetado pelo AngularJS responsável pela criação de rotas, o objeto $routeProvider. Caso
     não tivéssemos importado o módulo ngRoute, ele não estaria disponível para injeção.
   */
-    .config(function($routeProvider) {
+    .config(["$routeProvider", function($routeProvider) {
 
       /*
         O objeto $routeProvider possui a função when. Nela informamos a rota (sem o #) e no segundo parâmetro
@@ -42,4 +42,4 @@ angular.module('contatooh', ['ngRoute', 'ngResource'])
         rota alternativa, em nosso caso, aquela que lsita os contatos.
       */
       $routeProvider.otherwise({redirectTo: '/contatos'});
-    });
+    }]);

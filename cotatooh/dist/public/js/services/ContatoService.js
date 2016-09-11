@@ -5,6 +5,6 @@
   O nosso serviço retorna uma instância de $resource já configurada e pronta para uso. Todo serviço
   criado com factory deve retornar um objeto.
 */
-angular.module('contatooh').factory('Contato', function($resource) {
+angular.module('contatooh').factory('Contato', ["$resource", function($resource) {
     return $resource('/contatos/:id');
-});
+}]);

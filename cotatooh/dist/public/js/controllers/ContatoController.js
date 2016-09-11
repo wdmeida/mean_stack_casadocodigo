@@ -1,6 +1,6 @@
 angular.module('contatooh').controller('ContatoController',
   //Repare na troca da injeção $resource pelo nome de nosso serviço, Contato.
-  function($scope, $routeParams, Contato) {
+  ["$scope", "$routeParams", "Contato", function($scope, $routeParams, Contato) {
 
     /*A rota continua no plural, pois é a rota no lado do servidor.
     var Contato = $resource('/contatos/:id');
@@ -49,4 +49,4 @@ angular.module('contatooh').controller('ContatoController',
     Contato.query(function(contatos) {
       $scope.contatos = contatos;
     });
-  });
+  }]);
